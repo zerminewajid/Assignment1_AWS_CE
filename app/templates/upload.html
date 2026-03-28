@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}Upload Event Poster — UniEvent{% endblock %}
+
+{% block head %}
+<style>
+  .upload-container {
+    max-width: 640px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+  }
+  .upload-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: var(--shadow);
+  }
+  .upload-card h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--navy);
+    margin-bottom: 0.4rem;
+  }
+  .upload-card p {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-bottom: 2rem;
+    line-height: 1.55;
+  }
+  .drop-zone {
+    border: 2px dashed var(--gold);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    text-align: center;
+    background: rgba(200,168,75,0.04);
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 1.5rem;
+  }
+  .drop-zone:hover { background: rgba(200,168,75,0.09); }
+  .drop-zone .upload-icon { font-size: 3rem; margin-bottom: 0.75rem; }
+  .drop-zone h4 { font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.3rem; }
+  .drop-zone p { font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem; }
+  #poster-input { display: none; }
+  #preview-img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: none;
+    object-fit: contain;
+    max-height: 280px;
+    border: 1px solid var(--border);
+  }
+  .s3-info {
+    background: rgba(10,22,40,0.03);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .s3-info strong { color: var(--navy); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h1>Upload Event Poster</h1>
+  <div class="gold-line"></div>
+  <p>Event posters and media are stored securely in Amazon S3.</p>
+</div>
+
+<div class="upload-container">
+  <div class="upload-card fade-up">
+    <h2>Add Your Event Media</h2>
+    <p>Upload a poster or banner for your upcoming university event. Accepted formats: JPG, PNG, GIF, WebP. Maximum file size: 10 MB.</p>
+
+    <form method="POST" enctype="multipart/form-data" action="/upload">
+      <div class="drop-zone" onclick="document.getElementById('poster-input').click()">
+        <div class="upload-icon">🖼️</div>
+        <h4>Drop image here or click to browse</h4>
+        <p>PNG, JPG, GIF or WebP up to 10 MB</p>
+        <img id="preview-img" src="" alt="Preview"/>
+        <input type="file" id="poster-input" name="poster" accept=".png,.jpg,.jpeg,.gif,.webp"
+               onchange="previewImage(this)"/>
+        <span id="file-name" style="font-size:0.8rem;color:var(--navy);font-weight:500"></span>
+      </div>
+      <button type="submit" class="btn btn-gold" style="width:100%;justify-content:center;padding:0.8rem">
+        Upload to Amazon S3 ↑
+      </button>
+    </form>
+
+    <div class="s3-info">
+      <strong>☁️ Storage Details</strong><br/>
+      Files are uploaded to <strong>s3://{{ config.get('S3_BUCKET_NAME', 'unievents-media') }}/posters/</strong>
+      using an IAM role attached to the EC2 instance. No access keys are stored in the application code.
+      All objects are private by default and accessed via pre-signed URLs.
+    </div>
+  </div>
+</div>
+
+<script>
+function previewImage(input) {
+  const preview = document.getElementById('preview-img');
+  const nameEl  = document.getElementById('file-name');
+  if (input.files && input.files[0]) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+    nameEl.textContent = input.files[0].name;
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{% block title %}UniEvent — GIKI Campus Events{% endblock %}
+
+{% block head %}
+<style>
+  /* ── Hero ────────────────────────────────────────── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, #1e4f8c 100%);
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    padding: 5rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -80px;
+    top: -80px;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    border: 1px solid rgba(200,168,75,0.15);
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: 40px;
+    bottom: -120px;
+    width: 360px;
+    height: 360px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,168,75,0.08) 0%, transparent 70%);
+  }
+  .hero-content { max-width: 620px; position: relative; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(200,168,75,0.15);
+    border: 1px solid rgba(200,168,75,0.35);
+    color: var(--gold);
+    padding: 0.35rem 0.9rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.25rem, 5vw, 3.75rem);
+    color: var(--white);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .hero p {
+    color: rgba(250,250,248,0.68);
+    font-size: 1.05rem;
+    line-height: 1.65;
+    margin-bottom: 2rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(200,168,75,0.2);
+  }
+  .hero-stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.75rem;
+    color: rgba(250,250,248,0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 0.25rem;
+  }
+
+  /* ── Features strip ─────────────────────────────── */
+  .features {
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 3rem;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--blue);
+  }
+  .feature-icon {
+    width: 30px;
+    height: 30px;
+    background: var(--white);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    border: 1px solid var(--border);
+  }
+
+  /* ── Section headers ────────────────────────────── */
+  .section-header {
+    padding: 2.75rem 3rem 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    color: var(--navy);
+  }
+
+  /* ── Architecture badge ──────────────────────────── */
+  .arch-section {
+    background: var(--navy);
+    margin: 2.5rem 3rem;
+    border-radius: 16px;
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: center;
+    border: 1px solid rgba(200,168,75,0.2);
+  }
+  .arch-section h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 1.4rem;
+    margin-bottom: 0.75rem;
+  }
+  .arch-section p {
+    color: rgba(250,250,248,0.55);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+  .arch-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.25rem;
+  }
+  .arch-tag {
+    background: rgba(200,168,75,0.12);
+    border: 1px solid rgba(200,168,75,0.3);
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 99px;
+    letter-spacing: 0.06em;
+  }
+  .arch-diagram {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    min-width: 200px;
+  }
+  .arch-box {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: rgba(250,250,248,0.6);
+  }
+  .arch-box span {
+    display: block;
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+  }
+
+  @media (max-width: 768px) {
+    .hero { padding: 3.5rem 1.25rem; }
+    .section-header { padding: 2rem 1.25rem 0; flex-direction: column; align-items: flex-start; }
+    .arch-section { margin: 1.5rem 1.25rem; grid-template-columns: 1fr; }
+    .arch-diagram { display: none; }
+    .features { padding: 1.25rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero fade-up">
+  <div class="hero-content">
+    <div class="hero-eyebrow">🎓 GIKI Campus Portal</div>
+    <h1>Discover <em>Campus Events</em> All in One Place</h1>
+    <p>UniEvent brings together every society gala, workshop, trek, and blood drive onto a single, beautiful platform — powered by AWS and live event data.</p>
+    <div class="hero-actions">
+      <a href="/events" class="btn btn-gold">Browse All Events →</a>
+      <a href="/upload" class="btn btn-outline">Upload Event Poster</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">{{ featured|length * 2 + 4 }}</div>
+        <div class="hero-stat-label">Active Events</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">5</div>
+        <div class="hero-stat-label">AWS Services</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">99.9%</div>
+        <div class="hero-stat-label">Uptime SLA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features strip -->
+<div class="features">
+  <div class="feature-item"><div class="feature-icon">☁️</div> Hosted on AWS EC2</div>
+  <div class="feature-item"><div class="feature-icon">🗄️</div> Media on Amazon S3</div>
+  <div class="feature-item"><div class="feature-icon">⚖️</div> Load Balanced (ALB)</div>
+  <div class="feature-item"><div class="feature-icon">🔐</div> IAM + VPC Security</div>
+  <div class="feature-item"><div class="feature-icon">🔄</div> Auto-fetches live events</div>
+</div>
+
+<!-- Featured Events -->
+<div class="section-header fade-up delay-1">
+  <div>
+    <h2>Featured Events</h2>
+    <div class="gold-line"></div>
+    {% if last_fetched %}
+      <p style="font-size:0.78rem;color:var(--muted)">
+        Last refreshed: {{ last_fetched.strftime('%d %b %Y, %H:%M') }} UTC
+      </p>
+    {% endif %}
+  </div>
+  <a href="/events" class="btn btn-outline" style="white-space:nowrap">View All →</a>
+</div>
+
+<div class="events-grid">
+  {% for event in featured %}
+  <div class="event-card fade-up delay-{{ loop.index }}">
+    <img src="{{ event.image }}" alt="{{ event.title }}"
+         onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80'"/>
+    <div class="event-card-body">
+      <div class="event-category">{{ event.category }}</div>
+      <div class="event-title">{{ event.title }}</div>
+      <div class="event-meta">
+        <span>📅 {{ event.date }}{% if event.time != 'TBA' %} · {{ event.time }}{% endif %}</span>
+        <span>📍 {{ event.venue }}</span>
+      </div>
+      <div class="event-desc">{{ event.description }}</div>
+      <a href="{{ event.url }}" target="_blank" class="btn btn-gold">Register →</a>
+    </div>
+  </div>
+  {% else %}
+  <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">
+    No events available right now. Please check back later.
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Architecture Section -->
+<div class="arch-section fade-up">
+  <div>
+    <h3>AWS Cloud Architecture</h3>
+    <p>UniEvent is built on a fault-tolerant, multi-AZ AWS architecture. EC2 instances run in private subnets behind an Application Load Balancer. Event media is persisted to Amazon S3 with signed URLs for secure access.</p>
+    <div class="arch-services">
+      <span class="arch-tag">IAM Roles</span>
+      <span class="arch-tag">VPC + Subnets</span>
+      <span class="arch-tag">EC2 Auto Scaling</span>
+      <span class="arch-tag">Amazon S3</span>
+      <span class="arch-tag">ALB</span>
+      <span class="arch-tag">Security Groups</span>
+      <span class="arch-tag">Internet Gateway</span>
+      <span class="arch-tag">NAT Gateway</span>
+    </div>
+  </div>
+  <div class="arch-diagram">
+    <div class="arch-box"><span>🌐</span>ALB</div>
+    <div class="arch-box"><span>🔒</span>VPC</div>
+    <div class="arch-box"><span>💻</span>EC2</div>
+    <div class="arch-box"><span>🗄️</span>S3</div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+{% block title %}All Events — UniEvent GIKI{% endblock %}
+
+{% block head %}
+<style>
+  .filter-bar {
+    background: var(--off);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .filter-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-right: 0.4rem;
+  }
+  .filter-chip {
+    padding: 0.4rem 1rem;
+    border-radius: 99px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1.5px solid var(--border);
+    color: var(--navy);
+    background: var(--white);
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .filter-chip:hover,
+  .filter-chip.active {
+    background: var(--navy);
+    border-color: var(--navy);
+    color: var(--white);
+  }
+  .count-badge {
+    background: var(--gold);
+    color: var(--navy);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 99px;
+    margin-left: auto;
+  }
+  .no-events {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--muted);
+  }
+  .no-events h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+  @media (max-width: 768px) {
+    .filter-bar { padding: 1rem 1.25rem; }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+  <h1>University Events</h1>
+  <div class="gold-line"></div>
+  <p>
+    Live events fetched from the Ticketmaster Discovery API and curated for GIKI students.
+    {% if last_fetched %}Last updated: {{ last_fetched.strftime('%d %b %Y, %H:%M') }} UTC.{% endif %}
+  </p>
+</div>
+
+<!-- Filter bar -->
+<div class="filter-bar">
+  <span class="filter-label">Filter:</span>
+  {% for cat in categories %}
+    <a href="/events?category={{ cat }}"
+       class="filter-chip {{ 'active' if cat == active_category else '' }}">
+      {{ cat }}
+    </a>
+  {% endfor %}
+  <span class="count-badge">{{ events|length }} events</span>
+</div>
+
+<!-- Events grid -->
+<div class="events-grid">
+  {% for event in events %}
+  <div class="event-card fade-up" style="animation-delay: {{ loop.index0 * 0.06 }}s">
+    <img src="{{ event.image }}" alt="{{ event.title }}"
+         onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=80'"/>
+    <div class="event-card-body">
+      <div class="event-category">{{ event.category }}</div>
+      <div class="event-title">{{ event.title }}</div>
+      <div class="event-meta">
+        <span>📅 {{ event.date }}{% if event.time != 'TBA' %} at {{ event.time }}{% endif %}</span>
+        <span>📍 {{ event.venue }}</span>
+      </div>
+      <div class="event-desc">{{ event.description }}</div>
+      <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+        <a href="{{ event.url }}" target="_blank" class="btn btn-gold">Register →</a>
+        <a href="/upload" class="btn btn-outline">+ Poster</a>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="no-events">
+    <h3>No events found</h3>
+    <p>Try selecting a different category filter, or check back later when new events are fetched.</p>
+    <a href="/events" class="btn btn-navy" style="margin-top:1.25rem">Clear Filter</a>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

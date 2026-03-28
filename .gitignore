@@ -1,0 +1,23 @@
+# Environment variables - NEVER commit these
+.env
+*.pem
+vpc_ids.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+.venv/
+venv/
+env/
+
+# Uploads
+/tmp/uploads/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
