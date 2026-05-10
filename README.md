@@ -337,14 +337,14 @@ python app.py
 
 ---
 
-## 🧹 Cleanup (After Viva)
+## 🧹 Cleanup
 
 ```bash
 cd aws
 ./99_teardown.sh
 ```
 
-⚠️ Permanently deletes all AWS resources. Run only after your viva!
+⚠️ Permanently deletes all AWS resources.
 
 ---
 
@@ -365,4 +365,4 @@ cd aws
 **Zermine Wajid (2023786)**  
 BS Artificial Intelligence — 3rd Year  
 Ghulam Ishaq Khan Institute of Engineering Sciences and Technology  
-CE 308/408 Cloud Computing — Assignment 1
+CE 308 Cloud Computing — Assignment 1
