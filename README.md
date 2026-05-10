@@ -1,5 +1,5 @@
 # UniEvent — Cloud-Hosted University Event Management System
-### CE 308/408 Cloud Computing · Assignment 1 · GIKI
+### CE 308 Cloud Computing · Assignment 1 · GIKI
 
 ---
 
