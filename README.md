@@ -84,7 +84,7 @@ Assignment1_AWS_CE/
 │   ├── 02_iam_setup.sh          # IAM role, inline policy, instance profile
 │   ├── 03_s3_setup.sh           # S3 bucket creation and configuration
 │   ├── 04_ec2_alb_setup.sh      # Launch Template, ALB, Target Group, ASG
-│   └── 99_teardown.sh           # ⚠️ Deletes ALL resources (use after viva)
+│   └── 99_teardown.sh           # ⚠️ Deletes ALL resources 
 │
 └── README.md                    # This file — full setup guide
 ```
